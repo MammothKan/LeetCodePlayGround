@@ -7,7 +7,7 @@
 # @lc code=start
 class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
-        # 暴力匹配 
+        # 暴力匹配 BurstForce
         # 时间复杂度O(n*m)，n为haystack的长度，m为needle的长度
         """
         for i in range(len(haystack)):
@@ -23,6 +23,36 @@ class Solution:
         """
     
         # KMP算法
+        # next数组，实则为前缀表，即needle子串中相同前缀和后缀的长度
+        next = [0] * len(needle)
+        for i in range(1, len(next)):
+            if needle[i] == needle[next[i-1]]:
+                next[i] = next[i-1]+1
+            elif needle[i] == needle[next[i-1]-1]:
+                next[i] = next[i-1]
+        print(next)
+
+        i, j = 0, 0
+        while i < len(haystack):
+            # while j < len(needle):
+            if haystack[i] == needle[j]:
+                # i, j += 1, 1
+                # i += 1
+                j += 1
+            else:
+                if j != 0:
+                    i -= 1
+                    j = next[j-1]
+            i += 1
+            if j == len(needle):
+                return i - len(needle)
+        return -1
+
+
+  #  "leetcode"\n"leeto"      
+  # "aabaaabaaac"\n"aabaaac"
+
+
         
 
 # @lc code=end
