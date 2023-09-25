@@ -25,7 +25,14 @@ class Solution:
         # KMP算法
         # next数组，实则为前缀表，即needle子串中相同前缀和后缀的长度
         next = [0] * len(needle)
-        for i in range(1, len(next)):
+        prefix_tail = 0
+        for suffix_tail in range(1, len(next)):
+            while prefix_tail > 0 and needle[prefix_tail+1] != needle[suffix_tail]:
+                prefix_tail -= 1
+            if needle[prefix_tail+1] == needle[suffix_tail]:
+                prefix_tail += 1
+            next[suffix_tail] = prefix_tail
+
             if needle[i] == needle[next[i-1]]:
                 next[i] = next[i-1]+1
             elif needle[i] == needle[next[i-1]-1]:
